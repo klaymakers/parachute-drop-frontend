@@ -26,6 +26,7 @@ function Navbar() {
   const handleWalletClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const targetId = e.currentTarget.id as walletIdType;
     const address = await communicateWithWallet(targetId);
+
     setOwnerAddress(address);
   };
 
