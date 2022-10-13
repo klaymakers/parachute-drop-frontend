@@ -4,5 +4,6 @@ import { MetaMaskInpageProvider } from '@metamask/providers';
 declare global {
   interface Window extends KeplrWindow {
     ethereum: MetaMaskInpageProvider;
+    klaytn: Proxy;
   }
 }

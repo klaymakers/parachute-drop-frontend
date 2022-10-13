@@ -26,6 +26,7 @@ function Navbar() {
   const handleWalletClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const targetId = e.currentTarget.id as walletIdType;
     const address = await communicateWithWallet(targetId);
+
     setOwnerAddress(address);
   };
 
@@ -40,9 +41,9 @@ function Navbar() {
   return (
     <div className="navbar bg-[#000]">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl" onClick={handleClick}>
+        <button className="btn btn-ghost normal-case text-xl" onClick={handleClick}>
           <Logo />
-        </a>
+        </button>
       </div>
 
       {ownerAddress ? (
@@ -59,7 +60,7 @@ function Navbar() {
 
           <input type="checkbox" id="my-modal-4" className="modal-toggle" />
           <label htmlFor="my-modal-4" className="modal cursor-pointer">
-            <label className="modal-box relative" htmlFor="">
+            <div className="modal-box relative">
               <h3 className="font-bold text-lg text-center">Connect Wallet</h3>
               <p className="py-4 text-center">Choose wallet to connect to the blockchain.</p>
               <div className="grid gap-4">
@@ -76,12 +77,12 @@ function Navbar() {
                   className="btn btn-block "
                   onClick={handleWalletClick}
                   type="button"
-                  id="keplr"
+                  id="kaikas"
                 >
-                  Keplr Wallet
+                  Kaikas Wallet
                 </button>
               </div>
-            </label>
+            </div>
           </label>
 
           {/* <TestEvmos ownerAddress={ownerAddress} /> */}

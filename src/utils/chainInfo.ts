@@ -11,21 +11,21 @@ const chainInfo = (
 ) => {
   return {
     // 체인 Id
-    chainId: chainId,
+    chainId,
     // 사용자에게 보여질 chain 이름
-    chainName: chainName,
+    chainName,
     // 체인의 RPC 엔드포인트 주소
-    rpc: rpc,
+    rpc,
     // 체인의 REST 엔드포인트 주소
-    rest: rest,
+    rest,
     // 스테이킹 코인 정보
     stakeCurrency: {
       // 사용자에게 보여지는 코인 명칭(denomination)
-      coinDenom: coinDenom,
+      coinDenom,
       // 실제 블록체인에서 사용되는 코인의 명칭 (i.e. uatom, uosmo)
       coinMinimalDenom: coinMinimaldenom,
       // upebble를 PEBBLE로 변환하는 소수점 이하 자릿수
-      coinDecimals: coinDecimals,
+      coinDecimals,
     },
     // BIP44 경로
     bip44: {
@@ -47,22 +47,22 @@ const chainInfo = (
     currencies: [
       {
         // 사용자에게 보여지는 코인 명칭(denomination)
-        coinDenom: coinDenom,
+        coinDenom,
         // 실제 블록체인에서 사용되는 코인 명칭
         coinMinimalDenom: coinMinimaldenom,
         // upebble를 PEBBLE로 변환하는 소수점 이하 자릿수
-        coinDecimals: coinDecimals,
+        coinDecimals,
       },
     ],
     // 체인에서 fee 토큰으로 사용되는 코인/토큰의 리스트
     feeCurrencies: [
       {
         // 사용자에게 보여지는 코인 명칭(denomination)
-        coinDenom: coinDenom,
+        coinDenom,
         // 실제 블록체인에서 사용되는 코인 명칭
         coinMinimalDenom: coinMinimaldenom,
         // upebble를 PEBBLE로 변환하는 소수점 이하 자릿수
-        coinDecimals: coinDecimals,
+        coinDecimals,
       },
     ],
     // (Optional) ENS에서 주소를 가져올 때만 사용되는 정보로 BIP44의 coinType과 일치하는 것이 좋음
@@ -80,14 +80,14 @@ const chainInfo = (
 };
 
 const networkInfo = {
-  'evmos_9001-1': chainInfo(
-    'evmos_9001-1',
-    'Evmos Mainnet',
-    'https://grpc.bd.evmos.org:9090',
-    'https://rest.bd.evmos.org:1317',
-    'evmos',
-    'uevmos',
-    6,
+  klaytn_1001: chainInfo(
+    'klaytn_1001',
+    'Klaytn Testnet',
+    'https://api.baobab.klaytn.net:8651',
+    'https://baobab.wallet.klaytn.com/',
+    'KLAY',
+    'peb',
+    18,
     'wasm',
   ),
 };

@@ -1,8 +1,8 @@
 import { KeplrWallet } from '@src/types';
 import networkInfo from '@src/utils/chainInfo';
-const EVMOS_MAINNET_INFO = networkInfo['evmos_9001-1'];
+const KLAYTN_TESTNET_INFO = networkInfo['klaytn_1001'];
 
-export type walletIdType = 'metamask' | 'evmos';
+export type walletIdType = 'metamask' | 'kaikas';
 
 export const isLogout = () => {
   return (
@@ -22,7 +22,8 @@ export const communicateWithWallet = async (
     return address;
   }
 
-  const address = await getKeplrAddress();
+  // kaikas wallet
+  const address = await getKaikasAddress();
 
   return address;
 };
@@ -48,30 +49,27 @@ export const getMetamaskAddress = async () => {
   }
 };
 
-export const getKeplrAddress = async () => {
+export const getKaikasAddress = async () => {
   try {
-    if (!window.getOfflineSigner || !window.keplr) {
-      alert('Please install keplr extension');
+    if (!window.klaytn) {
+      alert('Please install kaikas extension');
 
       return;
     }
 
-    if (window.keplr.experimentalSuggestChain) {
+    if (window.klaytn.experimentalSuggestChain) {
       try {
-        await window.keplr.experimentalSuggestChain(EVMOS_MAINNET_INFO);
+        await window.klaytn.experimentalSuggestChain(KLAYTN_TESTNET_INFO);
       } catch {
         alert('Failed to suggest the chain');
       }
     }
 
-    await window.keplr.enable(EVMOS_MAINNET_INFO.chainId);
-    const offlineSigner = window.keplr.getOfflineSigner(EVMOS_MAINNET_INFO.chainId);
-    const accounts = (await offlineSigner.getAccounts()) as Array<KeplrWallet>;
-    const accountAddr = accounts[0].address;
+    const addressList = await window.klaytn.enable(KLAYTN_TESTNET_INFO.chainId);
 
-    localStorage.setItem('ownerAddress', accountAddr);
+    localStorage.setItem('ownerAddress', addressList[0]);
 
-    return accountAddr;
+    return addressList[0];
   } catch (error) {
     console.log(error);
   }
