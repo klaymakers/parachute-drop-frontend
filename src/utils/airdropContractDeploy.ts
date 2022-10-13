@@ -1,5 +1,6 @@
+import { infoStoreContractAddress } from '@src/constants';
 import { airdropAbi } from '@src/lib/klaytnAbi';
-import ScheduledAirdrop from '@src/lib/ScheduledAirdrop';
+import { airdropByteCode } from '@src/lib/klaytnByteCode';
 import { NewAirdropType } from '@src/pages/new_airdrop';
 import { ethers, utils } from 'ethers';
 
@@ -21,8 +22,6 @@ export const airdropContractDeploy = async ({
   const targetAddresseList = whiteList?.map((o) => ethers.utils.getAddress(o?.address));
   let totalValue = 0;
   const targetAmountList = whiteList?.map((o) => {
-    console.log('o양', o?.amounts);
-    console.log('o양', o);
     if (o?.amounts === undefined) {
       throw Error('invalid csv file format');
     }
@@ -35,29 +34,12 @@ export const airdropContractDeploy = async ({
   const tokenContractAddress = localStorage.getItem('tokenContractAddress');
 
   const totalValuePerRound = utils.parseEther(totalValue.toString());
-
-  console.log('totalValuePerRound', totalValuePerRound);
-  console.log('tokenContractAddress', tokenContractAddress);
-
-  const infoStoreAddress = '0x24516E7EA22C009288eC666bCaa2593385D096D5';
   const signer = new ethers.providers.Web3Provider((window as any).ethereum).getSigner();
 
   console.log('SIGNER >>>>>>>>>>>>>>>>>>>>>>>>>>>>', signer);
-  const airdropFactory = new ethers.ContractFactory(
-    ScheduledAirdrop['abi'],
-    ScheduledAirdrop['bytecode'],
-    signer,
-  );
+  const airdropFactory = new ethers.ContractFactory(airdropAbi, airdropByteCode, signer);
 
   console.log('>>>>>>>>>>>>>>>>>>> AIRDROP FACTORY >>>>>>>>>>>>>>>>>', airdropFactory);
-
-  // console.log(
-  //   '>>>>>>>>>>>>>>>>>>>>>>>> tokenContractAddress >>>>>>>>>>>>>>>>>>>>>>> ',
-  //   ethers.utils.getAddress(tokenContractAddress.toString()),
-  // );
-
-  // 0x24516E7EA22C009288eC666bCaa2593385D096D5
-  // 0x838d974c4fb94537bfa9e700b1a09b8324743471
 
   console.log(
     'tokenContractAddr',
@@ -75,7 +57,7 @@ export const airdropContractDeploy = async ({
     'perRound',
     totalValuePerRound,
     'store',
-    '0x24516E7EA22C009288eC666bCaa2593385D096D5',
+    infoStoreContractAddress,
   );
 
   const result = await airdropFactory.deploy(
@@ -86,14 +68,14 @@ export const airdropContractDeploy = async ({
     targetAddresseList,
     targetAmountList,
     totalValuePerRound,
-    '0x24516E7EA22C009288eC666bCaa2593385D096D5',
+    infoStoreContractAddress,
   );
 
-  const receipt = await result.deployed();
+  // const receipt = await result.deployed();
 
-  const receipt2 = await result.deployTransaction.wait();
+  // const receipt2 = await result.deployTransaction.wait();
 
-  console.log('>>>>>>>>>> RESULT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', receipt2);
+  // console.log('>>>>>>>>>> RESULT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', receipt2);
 
   console.log(result.address);
 
