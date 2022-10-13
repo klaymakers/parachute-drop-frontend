@@ -75,11 +75,6 @@ function Resolved() {
   const getData = async () => {
     // airdropTokenAddress
     const zeroAddr = '0x0000000000000000000000000000000000000000';
-    const sample = '0xF76cb57df586D9DdEb2BB20652CF633417887Ca3';
-
-    // if (airdropTokenAddress === zeroAddr) {
-    //   airdropTokenAddress = sample;
-    // }
 
     if (airdropTokenAddress === zeroAddr) {
       return;
