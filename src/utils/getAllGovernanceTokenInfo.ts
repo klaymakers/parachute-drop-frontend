@@ -1,8 +1,6 @@
-import { abi } from '@src/utils/abi';
+import { infoStoreContractAddress, JSONRPC_PROVIDER } from '@src/constants';
+import { infoStoreAbi } from '@src/lib/klaytnAbi';
 import { ethers } from 'ethers';
-
-// export const STORE_ADDRESS = '0x838D974c4fB94537bFA9e700B1a09b8324743471'; // Goerli
-export const STORE_ADDRESS = '0x24516E7EA22C009288eC666bCaa2593385D096D5';
 
 export interface tokenInfo {
   image: string;
@@ -19,10 +17,10 @@ export interface tokenInfo {
 export const getAllGovernanceTokenInfo = async () => {
   // const provider = ethers.providers.getDefaultProvider('goerli');
   console.log('<<<<<<<<<<<<<<<< SDFSDFDS');
-  const provider = new ethers.providers.JsonRpcProvider('https://eth.bd.evmos.dev:8545');
+  const provider = new ethers.providers.JsonRpcProvider(JSONRPC_PROVIDER);
 
   console.log('>>>>>>>> PROVIDER >>>>>>>>>', provider);
-  const ContractInfoStore = new ethers.Contract(STORE_ADDRESS, abi, provider);
+  const ContractInfoStore = new ethers.Contract(infoStoreContractAddress, infoStoreAbi, provider);
 
   return await ContractInfoStore.getAllGovernanceTokenInfo();
 };

@@ -5,7 +5,7 @@ import { getAirdropSnapshotTimestamps } from '@src/utils/getAirdropSnapshotTimes
 import { getAirdropTargetAddresses } from '@src/utils/getAirdropTargetAddresses';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import CommonError from '../common/ComomonError';
@@ -34,11 +34,23 @@ function Resolved() {
   const isMounted = useMounted();
 
   const router = useRouter();
+  const [isAirdropContractOpened, setIsAirdropContractOpened] = useState<RouterQuery>();
+  const [airdropTokenAddress, setAirdropTokenAddress] = useState<RouterQuery>();
+  const [governanceToken, setGovernanceToken] = useState<RouterQuery>();
+  const [tokenSupply, setTokenSupply] = useState<RouterQuery>();
 
-  const { isAirdropContractOpened, airdropTokenAddress, governanceToken, tokenSupply } =
-    router?.query;
   const userAddress = isMounted ? localStorage?.getItem('ownerAddress') : false;
   const [userEligibleTokenList, setUserEligibleTokenList] = useState();
+
+  useLayoutEffect(() => {
+    const { isAirdropContractOpened, airdropTokenAddress, governanceToken, tokenSupply } =
+      router.query;
+
+    setIsAirdropContractOpened(isAirdropContractOpened);
+    setAirdropTokenAddress(airdropTokenAddress);
+    setGovernanceToken(governanceToken);
+    setTokenSupply(tokenSupply);
+  }, [router?.query]);
 
   const getList = async () => {
     if (userAddress === false) {
@@ -53,7 +65,7 @@ function Resolved() {
     getList();
   }, []);
 
-  const total = parseInt(tokenSupply.toString());
+  const total = parseInt(tokenSupply?.toString());
 
   const [nowAirdropTimestamp, setNewAirdropTimestamp] = useState('');
   const [AirdropPerRoundAmount, SetAirdropPerRoundAmount] = useState(0);
@@ -73,6 +85,15 @@ function Resolved() {
       return;
     }
 
+    if (typeof airdropTokenAddress === 'string') {
+      // const airdropTimestamps = await getAirdropSnapshotTimestamps(airdropTokenAddress);
+      // const airdropAmountsPerRound = await getAirdropAmountsPerRound(airdropTokenAddress);
+      // const airdropWhiteList = await getAirdropTargetAddresses(airdropTokenAddress);
+      // setNewAirdropTimestamp(airdropTimestamps);
+      // SetAirdropPerRoundAmount(airdropAmountsPerRound);
+      // setAirdropTargetAddr(airdropWhiteList);
+      // console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
+    }
     const airdropTimestamps = await getAirdropSnapshotTimestamps(airdropTokenAddress);
     const airdropAmountsPerRound = await getAirdropAmountsPerRound(airdropTokenAddress);
     const airdropWhiteList = await getAirdropTargetAddresses(airdropTokenAddress);
@@ -80,25 +101,24 @@ function Resolved() {
     setNewAirdropTimestamp(airdropTimestamps);
     SetAirdropPerRoundAmount(airdropAmountsPerRound);
     setAirdropTargetAddr(airdropWhiteList);
-
+    console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
     setNowAddrWhiteListed(
       airdropTargetAddr.some((whiteAddr) => whiteAddr.toLowerCase() === userAddress),
     );
 
     console.log('nowAddrWhiteListed >>>>>>>>>>> ', nowAddrWhiteListed);
-    console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
   };
 
   useEffect(() => {
     // TODO: ^^;;
     if (isAirdropContractOpened === 'true') {
-      getData().then((r) => console.log(r));
+      getData();
     } else {
       console.log('airdrop contract is not opened');
 
       return;
     }
-  }, [airdropTargetAddr]);
+  }, [isAirdropContractOpened]);
 
   /**
    * case 1 : owner address === dao space owner address && airdrop 컨트랙트 deploy X
@@ -258,7 +278,7 @@ function Resolved() {
 
           <div className="bg-[#191919] p-8 rounded-lg">
             {airdropDetails.map((airdrop, index) => (
-              <div className="mb-4">
+              <div className="mb-4" key={airdrop.value}>
                 <span className="opacity-50 w-40 inline-block">{airdrop.label}</span>
                 <span>{airdrop.value}</span>
               </div>

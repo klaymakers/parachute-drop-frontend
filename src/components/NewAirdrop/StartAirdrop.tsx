@@ -16,7 +16,6 @@ import Title from '../CreateSpace/Title';
 
 interface StartAirdropProps {
   setStep: React.Dispatch<React.SetStateAction<AirdropStep>>;
-  // airdropContractDeploy: any;
 }
 
 const StartAirdrop = ({ setStep }: StartAirdropProps) => {
@@ -32,7 +31,7 @@ const StartAirdrop = ({ setStep }: StartAirdropProps) => {
           </div>
         }
       >
-        <Resolved setStep={setStep} airdropContractDeploy={airdropContractDeploy} />
+        <Resolved setStep={setStep} />
       </SSRSafeSuspense>
     </ErrorBoundary>
   );

@@ -30,3 +30,9 @@ export const AIRDROP_TITLE = {
   MY_AIRDROP: 'My Airdrop',
   AIRDROP_SETTING: 'Airdrop Setting',
 };
+
+export const JSONRPC_PROVIDER = 'https://api.baobab.klaytn.net:8651';
+
+export const infoStoreContractAddress = '0xe55494433B6Aa1C47f4b9479B14248CB229D2464';
+export const tokenContractAddress = '0xF187BF2f7Dec79Ac7ecc9abCA00B2Aa165894D48'; // sample
+export const airdropContractAddress = '0x6935E780d2E63f7b6D6D3563faCbbDEd8E94d129';

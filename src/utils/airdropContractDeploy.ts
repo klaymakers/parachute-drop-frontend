@@ -1,4 +1,4 @@
-import { airdropAbi } from '@src/lib/abi';
+import { airdropAbi } from '@src/lib/klaytnAbi';
 import ScheduledAirdrop from '@src/lib/ScheduledAirdrop';
 import { NewAirdropType } from '@src/pages/new_airdrop';
 import { ethers, utils } from 'ethers';
