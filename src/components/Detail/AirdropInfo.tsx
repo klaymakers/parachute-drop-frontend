@@ -60,12 +60,7 @@ function Resolved() {
 
     setUserEligibleTokenList(data);
   };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  const total = parseInt(tokenSupply?.toString());
+  const total = tokenSupply ? parseInt(tokenSupply?.toString()) : 10000;
 
   const [nowAirdropTimestamp, setNewAirdropTimestamp] = useState('');
   const [AirdropPerRoundAmount, SetAirdropPerRoundAmount] = useState(0);
@@ -76,44 +71,41 @@ function Resolved() {
     // airdropTokenAddress
     const zeroAddr = '0x0000000000000000000000000000000000000000';
 
+    console.log('userAddress', userAddress);
     if (airdropTokenAddress === zeroAddr) {
       return;
     }
-
-    if (typeof airdropTokenAddress === 'string') {
-      // const airdropTimestamps = await getAirdropSnapshotTimestamps(airdropTokenAddress);
-      // const airdropAmountsPerRound = await getAirdropAmountsPerRound(airdropTokenAddress);
-      // const airdropWhiteList = await getAirdropTargetAddresses(airdropTokenAddress);
-      // setNewAirdropTimestamp(airdropTimestamps);
-      // SetAirdropPerRoundAmount(airdropAmountsPerRound);
-      // setAirdropTargetAddr(airdropWhiteList);
-      // console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
+    if (userAddress === false) {
+      return;
     }
-    const airdropTimestamps = await getAirdropSnapshotTimestamps(airdropTokenAddress);
-    const airdropAmountsPerRound = await getAirdropAmountsPerRound(airdropTokenAddress);
-    const airdropWhiteList = await getAirdropTargetAddresses(airdropTokenAddress);
+    if (typeof airdropTokenAddress === 'string') {
+      const airdropTimestamps = await getAirdropSnapshotTimestamps(airdropTokenAddress);
+      const airdropAmountsPerRound = await getAirdropAmountsPerRound(airdropTokenAddress);
+      const airdropWhiteList = await getAirdropTargetAddresses(airdropTokenAddress);
 
-    setNewAirdropTimestamp(airdropTimestamps);
-    SetAirdropPerRoundAmount(airdropAmountsPerRound);
-    setAirdropTargetAddr(airdropWhiteList);
-    console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
-    setNowAddrWhiteListed(
-      airdropTargetAddr.some((whiteAddr) => whiteAddr.toLowerCase() === userAddress),
-    );
+      setNewAirdropTimestamp(airdropTimestamps);
+      SetAirdropPerRoundAmount(airdropAmountsPerRound);
+      setAirdropTargetAddr(airdropWhiteList);
+      console.log('airdropWhiteList >>>>>>>>> ', airdropWhiteList);
+      const isWhiteList = airdropTargetAddr.filter(
+        (whiteAddr: string) => whiteAddr?.toLowerCase() === userAddress?.toLowerCase(),
+      );
 
-    console.log('nowAddrWhiteListed >>>>>>>>>>> ', nowAddrWhiteListed);
+      console.log('>>isWhiteList', isWhiteList);
+
+      setNowAddrWhiteListed(isWhiteList?.length > 0);
+    }
   };
 
   useEffect(() => {
+    getList();
     // TODO: ^^;;
     if (isAirdropContractOpened === 'true') {
       getData();
     } else {
       console.log('airdrop contract is not opened');
-
-      return;
     }
-  }, [isAirdropContractOpened]);
+  }, [isAirdropContractOpened, nowAddrWhiteListed, governanceToken]);
 
   /**
    * case 1 : owner address === dao space owner address && airdrop 컨트랙트 deploy X
