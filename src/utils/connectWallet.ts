@@ -52,7 +52,7 @@ export const getMetamaskAddress = async () => {
 export const getKaikasAddress = async () => {
   try {
     if (!window.klaytn) {
-      alert('Please install kaikas extension');
+      alert('Get Kaikas!');
 
       return;
     }
